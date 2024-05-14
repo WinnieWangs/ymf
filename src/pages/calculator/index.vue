@@ -74,7 +74,7 @@ function calculate() {
   // 本次浇水可以减少的时间
   const _fillTime = _waterRemainMax * maxWaterMinusTime.value / maxWaterRemainTime.value
   // 本次浇水后剩余时间
-  const _leftTime = _plantLeftTime - _fillTime
+  // const _leftTime = _plantLeftTime - _fillTime
   // 一轮浇水 + 一轮等待浇水的时间
   const _oneTurnTime = maxWaterRemainTime.value + maxWaterMinusTime.value
   // 轮次
