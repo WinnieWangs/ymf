@@ -18,10 +18,10 @@ const display = computed(() => {
         <div class="i-carbon:home" />
       </template>
     </van-tabbar-item>
-    <van-tabbar-item replace to="/profile">
-      {{ t('layouts.profile') }}
+    <van-tabbar-item replace to="/about">
+      {{ t('layouts.about') }}
       <template #icon>
-        <div class="i-carbon:user" />
+        <div class="i-carbon:information" />
       </template>
     </van-tabbar-item>
   </van-tabbar>

@@ -6,6 +6,7 @@ declare module 'vue-router' {
     i18n?: string
     /** keepalive */
     keepAlive?: boolean
+    id?: number
   }
 }
 export {}

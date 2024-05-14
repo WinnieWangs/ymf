@@ -25,7 +25,8 @@
   },
   "layouts": {
     "home": "首页",
-    "profile": "我的"
+    "profile": "我的",
+    "about": "关于"
   },
   "profile": {
     "placeholder": "未完成"
