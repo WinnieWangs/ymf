@@ -1,80 +1,75 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { PlantsGrownTimeList, type TVisibleCollection, type TPlantsGrownTimeItem } from './constants'
-import dayjs from "dayjs";
-import useListStore from '@/stores/modules/list'
-import { useRouter } from "vue-router";
+import { ref } from 'vue'
+import dayjs from 'dayjs'
+import { useRouter } from 'vue-router'
 import { nanoid } from 'nanoid'
+import { PlantsGrownTimeList, type TPlantsGrownTimeItem, type TVisibleCollection } from './constants'
+import useListStore from '@/stores/modules/list'
 
 const listStore = useListStore()
 const router = useRouter()
 
-
 // 获取当前日期和时间，并格式化为 "YYYY-MM-DD HH:mm"
 definePage({
-  name: "calculator",
+  name: 'calculator',
   meta: {
     level: 2,
-    title: "推荐浇水时间",
+    title: '推荐浇水时间',
   },
-});
+})
 
-const currentTime = ref(dayjs().format("YYYY年MM月DD日 HH:mm"));
+const currentTime = ref(dayjs().format('YYYY年MM月DD日 HH:mm'))
 
 const visibleCollection = reactive<TVisibleCollection>({
   plantType: false,
   waterRemainTime: false,
-  plantGrownLeftTime: false
+  plantGrownLeftTime: false,
 })
 
-const currentPlant = ref({ name: "32小时", value: 32 });
-const totalTime = computed(() => currentPlant.value.value * 60);
-const maxWaterRemainTime = computed(() => Math.floor(totalTime.value / 3));
-const maxWaterRemainHour = computed(() => Math.floor(maxWaterRemainTime.value / 60));
-const maxWaterMinusTime = computed(() => Math.floor(totalTime.value/12));
-const maxPlantGrownLeftTimeHour = computed(() => Math.floor(totalTime.value / 60));
+const currentPlant = ref({ name: '32小时', value: 32 })
+const totalTime = computed(() => currentPlant.value.value * 60)
+const maxWaterRemainTime = computed(() => Math.floor(totalTime.value / 3))
+const maxWaterRemainHour = computed(() => Math.floor(maxWaterRemainTime.value / 60))
+const maxWaterMinusTime = computed(() => Math.floor(totalTime.value / 12))
+const maxPlantGrownLeftTimeHour = computed(() => Math.floor(totalTime.value / 60))
 
-const waterRemainTime = ref(["07", "00"]);
+const waterRemainTime = ref(['07', '00'])
 const waterRemainTimeText = computed(() => {
-  return `${waterRemainTime.value[0]}小时${waterRemainTime.value[1]}分钟`;
-});
+  return `${waterRemainTime.value[0]}小时${waterRemainTime.value[1]}分钟`
+})
 
-const plantGrownLeftTime = ref(["07", "01"]);
+const plantGrownLeftTime = ref(['07', '01'])
 const plantGrownLeftTimeText = computed(() => {
-  return `${plantGrownLeftTime.value[0]}小时${plantGrownLeftTime.value[1]}分钟`;
-});
-
+  return `${plantGrownLeftTime.value[0]}小时${plantGrownLeftTime.value[1]}分钟`
+})
 
 function onPlantSelect(item: TPlantsGrownTimeItem) {
   toggleVisible('plantType', false)
-  currentPlant.value = item;
+  currentPlant.value = item
 
   if (currentPlant.value.value) {
-    waterRemainTime.value = [`00`, `00`];
-    plantGrownLeftTime.value = [`${Math.floor(totalTime.value / 60)}`, `${totalTime.value % 60}`];
-
+    waterRemainTime.value = [`00`, `00`]
+    plantGrownLeftTime.value = [`${Math.floor(totalTime.value / 60)}`, `${totalTime.value % 60}`]
   }
 }
 
-function toggleVisible (name: keyof TVisibleCollection, visible: boolean){
+function toggleVisible(name: keyof TVisibleCollection, visible: boolean) {
   visibleCollection[name] = visible
 }
 
 function getTimeAfterAddMinute(minute: number) {
-  return dayjs().add(minute, 'minute').format("YYYY年MM月DD日 HH:mm")
+  return dayjs().add(minute, 'minute').format('YYYY年MM月DD日 HH:mm')
 }
 
 function calculate() {
   // 剩余生长时间
   const _plantLeftTime = ~~plantGrownLeftTime.value[0] * 60 + ~~plantGrownLeftTime.value[1]
   // 水分保持时间
-  const _waterRemainTime =  ~~waterRemainTime.value[0] * 60 + ~~waterRemainTime.value[1]
+  const _waterRemainTime = ~~waterRemainTime.value[0] * 60 + ~~waterRemainTime.value[1]
   // 水分距离最大保水时间有多少分钟
   const _waterRemainMax = maxWaterRemainTime.value - _waterRemainTime
   // 本次浇水可以减少的时间
   const _fillTime = _waterRemainMax * maxWaterMinusTime.value / maxWaterRemainTime.value
-  // 本次浇水后剩余时间
-  // const _leftTime = _plantLeftTime - _fillTime
   // 一轮浇水 + 一轮等待浇水的时间
   const _oneTurnTime = maxWaterRemainTime.value + maxWaterMinusTime.value
   // 轮次
@@ -96,7 +91,7 @@ function calculate() {
 }
 
 onMounted(() => {
-  // onPlantSelect({ name: '32小时', value: 32 })
+  onPlantSelect({ name: '32小时', value: 32 })
 })
 </script>
 
@@ -131,10 +126,10 @@ onMounted(() => {
       :style="{ width: '100vh', height: '300px' }"
     >
       <van-time-picker
-        @confirm="toggleVisible('plantGrownLeftTime', false)"
         v-model="plantGrownLeftTime"
         :max-hour="maxPlantGrownLeftTimeHour"
         title="选择剩余生长时间"
+        @confirm="toggleVisible('plantGrownLeftTime', false)"
       />
     </van-popup>
 
@@ -151,22 +146,23 @@ onMounted(() => {
       :style="{ width: '100vh', height: '300px' }"
     >
       <van-time-picker
-        @confirm="toggleVisible('waterRemainTime', false)"
         v-model="waterRemainTime"
         :max-hour="maxWaterRemainHour"
         title="选择水分保持时间"
+        @confirm="toggleVisible('waterRemainTime', false)"
       />
     </van-popup>
 
     <van-button
+      v-if="currentPlant.value"
       class="calc-btn"
       round
       block
-      v-if="currentPlant.value"
       type="primary"
       @click="calculate"
-      >开始计算</van-button
     >
+      开始计算
+    </van-button>
   </Container>
 </template>
 
