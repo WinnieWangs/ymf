@@ -1,9 +1,9 @@
 {
-  "name": "vue3-vant-mobile",
+  "name": "ymf",
   "type": "module",
   "version": "2.3.1",
   "packageManager": "pnpm@9.0.6",
-  "description": "Vue + Vite H5 Starter Template",
+  "description": "元梦农场小助手",
   "license": "MIT",
   "homepage": "./",
   "scripts": {
