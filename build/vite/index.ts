@@ -96,17 +96,17 @@ export function createVitePlugins() {
         theme_color: '#fff',
         icons: [
           {
-            src: '/pwa192.png',
+            src: '/pwa192.jpeg',
             sizes: '192x192',
             type: 'image/jpeg',
           },
           {
-            src: '/pwa.png',
+            src: '/pwa.jpeg',
             sizes: '512x512',
             type: 'image/jpeg',
           },
           {
-            src: '/pwa.png',
+            src: '/pwa.jpeg',
             sizes: '512x512',
             type: 'image/jpeg',
             purpose: 'any maskable',
