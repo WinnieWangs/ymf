@@ -89,7 +89,7 @@ export function createVitePlugins() {
     // https://github.com/antfu/vite-plugin-pwa
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'safari-pinned-tab.svg'],
+      includeAssets: ['pwa192.jpeg'],
       manifest: {
         name: '元梦农场小助手',
         short_name: '元梦农场小助手',
